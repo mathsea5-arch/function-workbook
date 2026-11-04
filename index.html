@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>함수 워크북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lib/katex/katex.min.css">
+<script src="lib/katex/katex.min.js"></script>
+<script src="lib/katex/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="tabs" id="tabs"></nav>
+  <div class="spacer"></div>
+  <div class="tools" id="tools">
+    <button class="tool active" data-color="#1f2328" title="검정 펜"><span class="swatch" style="background:#1f2328"></span></button>
+    <button class="tool" data-color="#1a5fd0" title="파랑 펜"><span class="swatch" style="background:#1a5fd0"></span></button>
+    <button class="tool" data-color="#d93025" title="빨강 펜"><span class="swatch" style="background:#d93025"></span></button>
+    <button class="tool wide" data-tool="eraser" title="지우개">⌫</button>
+    <button class="tool" data-tool="undo" title="되돌리기">↶</button>
+    <button class="toggle" id="fingerBtn" title="켜면 손가락으로도 필기, 끄면 손가락은 화면 스크롤">✋ 끔</button>
+  </div>
+  <button class="toggle pdf" id="pdfBtn">📄 PDF</button>
+  <span class="pill save" id="savePill">로그인 전</span>
+</header>
+
+<main class="wb" id="wb"></main>
+
+<div class="overlay" id="login">
+  <form class="dialog" id="loginForm">
+    <h2>함수 워크북 시작하기</h2>
+    <p>학번과 이름을 입력하세요. 필기는 이 태블릿에 저장돼요.</p>
+    <div class="notice">📌 수업 중에 이 화면을 벗어나면(다른 앱·다른 탭·화면 끄기) <b>벗어난 시각과 시간이 선생님께 기록</b>됩니다.</div>
+    <label class="field">수업 코드<input id="inClass" required autocomplete="off"></label>
+    <label class="field">학번 (예: 10305)<input id="inNum" required inputmode="numeric" pattern="[0-9]{3,6}" autocomplete="off"></label>
+    <label class="field">이름<input id="inName" required autocomplete="off"></label>
+    <button class="primary" type="submit">시작</button>
+  </form>
+</div>
+
+<div class="overlay hidden" id="pdfDlg">
+  <div class="dialog">
+    <h2>내 필기를 PDF로 저장</h2>
+    <p>문제와 내가 쓴 필기가 함께 A4 PDF로 저장돼요.</p>
+    <div id="pdfChoices">
+      <button class="primary" data-scope="current">지금 보고 있는 Theme만</button>
+      <button class="primary alt" data-scope="all">전체 (Theme 4개)</button>
+      <button class="ghost" id="pdfCancel">닫기</button>
+    </div>
+    <div class="pdf-prog hidden" id="pdfProg"></div>
+  </div>
+</div>
+
+<div class="banner hidden" id="banner"><span id="bannerText"></span><button id="bannerOk">확인</button></div>
+
+<script src="lib/pdf/html2canvas.min.js"></script>
+<script src="lib/pdf/jspdf.umd.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/workbook-data.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/ink.js"></script>
+<script src="js/student.js"></script>
+</body>
+</html>
