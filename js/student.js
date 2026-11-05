@@ -49,13 +49,33 @@
   });
 
   // ---------------- 필기 도구 ----------------
+  //  크기 버튼 3개는 펜일 땐 펜 굵기, 지우개일 땐 지우개 크기 (각각 따로 기억)
+  const PEN_W = [0.0026, 0.0042, 0.0070], ERASER_R = [0.008, 0.016, 0.032];
+  const sizeIdx = { pen: 1, eraser: 1 };
+  function showSizes() {
+    const k = Ink.tool === 'eraser' ? 'eraser' : 'pen';
+    $('#tools').classList.toggle('erasing', k === 'eraser');
+    document.querySelectorAll('#tools .size').forEach(x => {
+      x.classList.toggle('active', +x.dataset.size === sizeIdx[k]);
+      x.querySelector('.sdot').style.background = k === 'pen' ? Ink.color : '';
+    });
+    Ink.width = PEN_W[sizeIdx.pen]; Ink.eraserR = ERASER_R[sizeIdx.eraser];
+  }
+  Ink.onHistory = (canUndo, canRedo) => {
+    $('#tools [data-tool="undo"]').disabled = !canUndo;
+    $('#tools [data-tool="redo"]').disabled = !canRedo;
+  };
   $('#tools').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     if (b.id === 'fingerBtn') { Ink.finger = !Ink.finger; b.classList.toggle('active', Ink.finger); b.textContent = Ink.finger ? '✋ 켬' : '✋ 끔'; return; }
     if (b.dataset.tool === 'undo') { Ink.doUndo(); return; }
-    document.querySelectorAll('#tools .tool').forEach(x => x.classList.toggle('active', x === b));
+    if (b.dataset.tool === 'redo') { Ink.doRedo(); return; }
+    if (b.dataset.size) { sizeIdx[Ink.tool === 'eraser' ? 'eraser' : 'pen'] = +b.dataset.size; showSizes(); return; }
+    document.querySelectorAll('#tools [data-color], #tools [data-tool="eraser"]').forEach(x => x.classList.toggle('active', x === b));
     if (b.dataset.tool === 'eraser') Ink.tool = 'eraser'; else { Ink.tool = 'pen'; Ink.color = b.dataset.color; }
+    showSizes();
   });
+  showSizes();
 
   // ---------------- 로그인 ----------------
   const saved = (() => { try { return JSON.parse(localStorage.getItem('wb:me')); } catch (e) { return null; } })();
@@ -132,15 +152,21 @@
         }
         if (carry.length) blocks.push(carry);
         if (!first) { pdf.addPage(); y = MT; }
-        for (const grp of blocks) {
+        for (let bi = 0; bi < blocks.length; bi++) {
+          const grp = blocks[bi];
+          prog.textContent = `PDF 만드는 중… Theme ${t.id} (${ti + 1}/${ids.length}) · ${Math.round((bi + 1) / blocks.length * 100)}%`;
+          await new Promise(r => setTimeout(r, 0));                 // 진행 표시가 화면에 보이도록 잠깐 양보
           const wrap = document.createElement('div'); wrap.className = 'pdf-block';
           grp[0].before(wrap); grp.forEach(el => wrap.appendChild(el));
-          const cv = await html2canvas(wrap, { scale: 1.5, backgroundColor: '#ffffff', logging: false, useCORS: true });
+          // 캡처할 때 지금 블록만 복사 (본문 화면·다른 블록까지 매번 복사하면 태블릿에서 매우 느려짐)
+          const skip = el => el.id === 'wb' || el.id === 'login' || (el.parentElement === stage && el !== wrap);
+          const cv = await html2canvas(wrap, { scale: 1.5, backgroundColor: '#ffffff', logging: false, useCORS: true, ignoreElements: skip });
           let w = CW, h = cv.height * CW / cv.width;
           const maxH = PH - MT - MB;
           if (h > maxH) { w = w * maxH / h; h = maxH; }
           if (y + h > PH - MB && y > MT) { pdf.addPage(); y = MT; }
           pdf.addImage(cv.toDataURL('image/jpeg', 0.85), 'JPEG', MX + (CW - w) / 2, y, w, h);
+          cv.width = cv.height = 0;                                  // 다 쓴 캡처는 바로 메모리에서 비움
           y += h + 3;
         }
         first = false;

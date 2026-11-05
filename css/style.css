@@ -107,6 +107,15 @@ main.wb { max-width: 1120px; margin: 0 auto; padding: 20px 20px 120px; }
 .map-h { font-weight: 700; color: #174ea6; margin-bottom: 4px; }
 .map-arrow { align-self: center; color: var(--blue); font-size: 22px; }
 .tool.wide { font-size: 20px; }
+.tool .ico { width: 26px; height: 26px; }
+.tool:disabled { opacity: .35; cursor: default; }
+.tool.size { width: 40px; }
+.sdot { border-radius: 50%; background: var(--ink); }
+.tool.size[data-size="0"] .sdot { width: 6px; height: 6px; }
+.tool.size[data-size="1"] .sdot { width: 11px; height: 11px; }
+.tool.size[data-size="2"] .sdot { width: 18px; height: 18px; }
+.tools.erasing .sdot { background: #fff; border: 1.5px solid var(--muted); }   /* 지우개 크기일 땐 속이 빈 원 */
+.sep { width: 1px; height: 30px; background: var(--line); margin: 0 2px; }
 
 input { -webkit-user-select: text; user-select: text; }
 

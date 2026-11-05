@@ -20,8 +20,14 @@
     <button class="tool active" data-color="#1f2328" title="검정 펜"><span class="swatch" style="background:#1f2328"></span></button>
     <button class="tool" data-color="#1a5fd0" title="파랑 펜"><span class="swatch" style="background:#1a5fd0"></span></button>
     <button class="tool" data-color="#d93025" title="빨강 펜"><span class="swatch" style="background:#d93025"></span></button>
-    <button class="tool wide" data-tool="eraser" title="지우개">⌫</button>
-    <button class="tool" data-tool="undo" title="되돌리기">↶</button>
+    <button class="tool" data-tool="eraser" title="지우개"><svg class="ico" viewBox="0 0 24 24"><path d="M15.6 3.6a2 2 0 0 1 2.8 0l2 2a2 2 0 0 1 0 2.8L11 17.8H6.6l-3-3a2 2 0 0 1 0-2.8z" fill="#f4a7b9" stroke="#3c4043" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.2 9.9l4.9 4.9" stroke="#3c4043" stroke-width="1.6"/><path d="M6.6 20.4h13" stroke="#3c4043" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    <span class="sep"></span>
+    <button class="tool size" data-size="0" title="가늘게"><span class="sdot"></span></button>
+    <button class="tool size active" data-size="1" title="보통"><span class="sdot"></span></button>
+    <button class="tool size" data-size="2" title="굵게"><span class="sdot"></span></button>
+    <span class="sep"></span>
+    <button class="tool" data-tool="undo" title="되돌리기" disabled><svg class="ico" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+    <button class="tool" data-tool="redo" title="다시 실행 (앞으로 가기)" disabled><svg class="ico" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
     <button class="toggle" id="fingerBtn" title="켜면 손가락으로도 필기, 끄면 손가락은 화면 스크롤">✋ 끔</button>
   </div>
   <button class="toggle pdf" id="pdfBtn">📄 PDF</button>
